@@ -364,6 +364,9 @@ if [ "$EXCLUDE_COLLECTIONS" ]; then
   done
 fi
 
+# Create required directories
+mkdir -p $BACKUPDIR/{hourly,daily,weekly,monthly} || shellout 'failed to create directories'
+
 # Do we use a filter for hourly point-in-time snapshotting?
 if [ "$DOHOURLY" == "yes" ]; then
 
@@ -380,9 +383,6 @@ if [ "$DOHOURLY" == "yes" ]; then
       QUERY='{ "ts" : { $gt :  Timestamp('$HOURLYQUERY', 1) } }'
   fi
 fi
-
-# Create required directories
-mkdir -p $BACKUPDIR/{hourly,daily,weekly,monthly} || shellout 'failed to create directories'
 
 if [ "$LATEST" = "yes" ]; then
     rm -rf "$BACKUPDIR/latest"
